@@ -1,3 +1,5 @@
+import com.android.tools.r8.internal.kt
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -51,16 +53,25 @@ android {
 }
 
 dependencies {
-    //...
+    // Room
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.viewmodel.ktx)
-    implementation(libs.androidx.livedata.ktx)
+
+    // ViewModel
+    implementation(libs.androidx.viewmodel.compose)
+
+    // Navigation
     implementation(libs.androidx.navigation.compose)
+
+    // Glide
     implementation(libs.glide)
     kapt(libs.glide.compiler)
 
+    // Coroutines
+    implementation(libs.coroutines.android)
+
+    // other
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

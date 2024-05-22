@@ -43,7 +43,7 @@ fun Navigation() {
             HomeScreen(productViewModel)
         }
         composable("basket") {
-            BasketScreen(productViewModel)
+            BasketScreen()
         }
     }
 }
