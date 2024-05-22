@@ -4,17 +4,25 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.arbuzlite.ui.theme.ArbuzLiteTheme
 import com.example.arbuzlite.screens.basket.BasketScreen
 import com.example.arbuzlite.screens.home.HomeScreen
+import com.example.arbuzlite.ui.theme.ArbuzLiteTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,34 +30,47 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ArbuzLiteTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colorScheme.background) {
-                    Navigation()
-                }
+                ArbuzLiteApp()
             }
         }
     }
 }
 
 @Composable
-fun Navigation() {
-    val productViewModel: ProductViewModel = viewModel()
+fun ArbuzLiteApp() {
     val navController = rememberNavController()
 
-    NavHost(navController, startDestination = "home") {
-        composable("home") {
-            HomeScreen(productViewModel)
-        }
-        composable("basket") {
-            BasketScreen()
-        }
-    }
-}
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                val navBackStackEntry = navController.currentBackStackEntryAsState().value
+                val currentRoute = navBackStackEntry?.destination
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ArbuzLiteTheme {
-        Navigation()
+                listOfNavItems.forEach { navItem: NavItem ->
+                    NavigationBarItem(
+                        selected = currentRoute?.hierarchy?.any { it.route == navItem.route } == true,
+                        onClick = {
+                            navController.navigate(navItem.route)
+                        },
+                        icon = {
+                            Image(
+                                painter = painterResource(id = navItem.icon),
+                                contentDescription = null
+                            )
+                        },
+                        label = {
+                            Text(navItem.label)
+                        }
+                    )
+                }
+            }
+        }
+    ) {paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
+            NavHost(navController, startDestination = Screens.Home.name) {
+                composable(Screens.Home.name) { HomeScreen() }
+                composable(Screens.Basket.name) { BasketScreen() }
+            }
+        }
     }
 }
