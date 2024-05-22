@@ -10,5 +10,5 @@ data class Product(
     val price: Double,
     val imageUrl: String,
     val quantity: Int = 0,
-    val isInBasket: Boolean
+    //val isInBasket: Boolean = false
 )

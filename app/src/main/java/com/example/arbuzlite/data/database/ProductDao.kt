@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.example.arbuzlite.data.model.Product
 import kotlinx.coroutines.flow.Flow
 
@@ -18,4 +19,7 @@ interface ProductDao {
 
     @Delete
     suspend fun deleteProduct(product: Product)
+
+    @Update
+    suspend fun updateProduct(product: Product)
 }

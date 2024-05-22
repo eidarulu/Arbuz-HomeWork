@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -19,25 +20,35 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.arbuzlite.data.database.DatabaseProvider
+import com.example.arbuzlite.data.database.ProductDataInitializer
+import com.example.arbuzlite.data.repository.ProductRepository
 import com.example.arbuzlite.screens.basket.BasketScreen
 import com.example.arbuzlite.screens.home.HomeScreen
 import com.example.arbuzlite.ui.theme.ArbuzLiteTheme
+import com.example.arbuzlite.viewmodel.ProductViewModel
+import com.example.arbuzlite.viewmodel.ProductViewModelFactory
 
 
 class MainActivity : ComponentActivity() {
+    private val database by lazy { DatabaseProvider.getDatabase(this) }
+    private val repository by lazy { ProductRepository(database.productDao()) }
+    private val viewModel: ProductViewModel by viewModels { ProductViewModelFactory(repository) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ProductDataInitializer.initialize(database.productDao())
         enableEdgeToEdge()
         setContent {
             ArbuzLiteTheme {
-                ArbuzLiteApp()
+                ArbuzLiteApp(viewModel)
             }
         }
     }
 }
 
 @Composable
-fun ArbuzLiteApp() {
+fun ArbuzLiteApp(viewModel: ProductViewModel) {
     val navController = rememberNavController()
 
     Scaffold(
@@ -68,8 +79,8 @@ fun ArbuzLiteApp() {
     ) {paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(navController, startDestination = Screens.Home.name) {
-                composable(Screens.Home.name) { HomeScreen() }
-                composable(Screens.Basket.name) { BasketScreen() }
+                composable(Screens.Home.name) { HomeScreen(navController, viewModel) }
+                composable(Screens.Basket.name) { BasketScreen(navController, viewModel) }
             }
         }
     }
