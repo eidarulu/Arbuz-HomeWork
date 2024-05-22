@@ -20,8 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 import com.example.arbuzlite.data.model.Product
 import com.example.arbuzlite.viewmodel.ProductViewModel
 
@@ -39,7 +37,6 @@ fun HomeScreen(navController: NavController, viewModel: ProductViewModel) {
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ProductItem(product: Product, viewModel: ProductViewModel) {
     Card(
@@ -53,11 +50,11 @@ fun ProductItem(product: Product, viewModel: ProductViewModel) {
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            GlideImage(
-                model = product.imageUrl,
-                contentDescription = "Product Image",
-                modifier = Modifier.height(100.dp).fillMaxWidth()
-            )
+//            GlideImage(
+//                model = product.imageUrl,
+//                contentDescription = "Product Image",
+//                modifier = Modifier.height(100.dp).fillMaxWidth()
+//            )
             Text(text = product.name)
             Text(text = "${product.price}")
             if (product.quantity > 0) {
