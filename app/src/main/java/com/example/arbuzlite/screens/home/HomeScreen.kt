@@ -62,7 +62,7 @@ fun ProductItem(product: Product, viewModel: ProductViewModel) {
             Text(text = "${product.price}")
             if (product.quantity > 0) {
                 Button(
-                    onClick = { viewModel.delete(product) },
+                    onClick = { viewModel.update(product.copy(quantity = 0)) },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                 ) {
                     Text("Remove")
@@ -74,15 +74,16 @@ fun ProductItem(product: Product, viewModel: ProductViewModel) {
                     Button(
                         onClick = {
                             if (product.quantity > 1)
-                                viewModel.insert(product.copy(quantity = product.quantity - 1))
-                        }
+                                viewModel.update(product.copy(quantity = product.quantity - 1))
+                        },
+                        enabled = product.quantity > 1
                     ) {
                         Text("-")
                     }
                     Text("${product.quantity}")
                     Button(
                         onClick = {
-                            viewModel.insert(product.copy(quantity = product.quantity + 1))
+                            viewModel.update(product.copy(quantity = product.quantity + 1))
                         }
                     ) {
                         Text("+")
@@ -90,7 +91,7 @@ fun ProductItem(product: Product, viewModel: ProductViewModel) {
                 }
             } else {
                 Button(
-                    onClick = { viewModel.insert(product.copy(quantity = 1)) },
+                    onClick = { viewModel.update(product.copy(quantity = 1)) },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Green)
                 ) {
                     Text("Add")
