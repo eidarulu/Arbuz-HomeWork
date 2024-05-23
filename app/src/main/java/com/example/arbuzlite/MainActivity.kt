@@ -8,13 +8,19 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -56,18 +62,31 @@ fun ArbuzLiteApp(viewModel: ProductViewModel) {
             NavigationBar {
                 val navBackStackEntry = navController.currentBackStackEntryAsState().value
                 val currentRoute = navBackStackEntry?.destination
+                val products by viewModel.allProducts.collectAsState(initial = emptyList())
+                val totalItemsInBasket = products.sumOf { it.quantity }
 
                 listOfNavItems.forEach { navItem: NavItem ->
+                    val isBasket = navItem.route == Screens.Basket.name
+
                     NavigationBarItem(
                         selected = currentRoute?.hierarchy?.any { it.route == navItem.route } == true,
                         onClick = {
                             navController.navigate(navItem.route)
                         },
                         icon = {
-                            Image(
-                                painter = painterResource(id = navItem.icon),
-                                contentDescription = null
+                            BadgedBox(
+                                badge = {
+                                    if (isBasket && totalItemsInBasket > 0) {
+                                        Badge { Text(totalItemsInBasket.toString()) }
+                                    }
+                                }
                             )
+                            {
+                                Image(
+                                    painter = painterResource(id = navItem.icon),
+                                    contentDescription = null
+                                )
+                            }
                         },
                         label = {
                             Text(navItem.label)
