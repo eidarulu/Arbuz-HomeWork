@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 object ProductDataInitializer {
     fun initialize(productDao: ProductDao) {
         CoroutineScope(Dispatchers.IO).launch {
-            productDao.insertProduct(Product(name = "Bamboo Toothbrush", price = 3535.65, imageUrl = "https://www.dhresource.com/0x0/f2/albu/g10/M00/0C/61/rBVaWV6ylY6AZwAZAAWBQbX9Hyo968.jpg"))
+            productDao.insertProduct(Product(name = "Toothbrush", price = 3535.65, imageUrl = "https://www.dhresource.com/0x0/f2/albu/g10/M00/0C/61/rBVaWV6ylY6AZwAZAAWBQbX9Hyo968.jpg"))
             productDao.insertProduct(Product(name = "Tote Bag", price = 5535.50, imageUrl = "https://i.pinimg.com/originals/57/16/89/571689f6d8daba318d7815bf81c07f56.jpg"))
             productDao.insertProduct(Product(name = "Garden Lights", price = 8826.45, imageUrl = "https://avatars.mds.yandex.net/i?id=6e30d1a80cf8b203adec658d7f32aa2e8c733af7-12244410-images-thumbs&n=13"))
             productDao.insertProduct(Product(name = "Water Bottle", price = 6626.5, imageUrl = "https://avatars.mds.yandex.net/i?id=402b54e07581e09cadd8f72f022d743b-5883552-images-thumbs&n=13"))

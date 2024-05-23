@@ -79,8 +79,8 @@ fun ArbuzLiteApp(viewModel: ProductViewModel) {
     ) {paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(navController, startDestination = Screens.Home.name) {
-                composable(Screens.Home.name) { HomeScreen(navController, viewModel) }
-                composable(Screens.Basket.name) { BasketScreen(navController, viewModel) }
+                composable(Screens.Home.name) { HomeScreen(viewModel) }
+                composable(Screens.Basket.name) { BasketScreen(viewModel) }
             }
         }
     }
