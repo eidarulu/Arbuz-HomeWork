@@ -5,7 +5,7 @@ Arbuz Lite app, mini Arbuz.kz, was developed as part of a homework task for appl
 ## Additional Information
 
 - Used MVVM architecture for organizing code
-- Implement the UI using Jetpack Compose
+- Implemented the UI using Jetpack Compose
 - Used a local Room database for storing product and cart information
 - Used Glide library for image processing
 
